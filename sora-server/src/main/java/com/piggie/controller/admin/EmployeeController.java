@@ -1,7 +1,8 @@
-package com.piggie.admin;
+package com.piggie.controller.admin;
 
 import com.piggie.constant.JwtClaimsConstant;
 
+import com.piggie.dto.EmployeeDTO;
 import com.piggie.dto.EmployeeLoginDTO;
 import com.piggie.entity.Employee;
 import com.piggie.properties.JwtProperties;
@@ -9,6 +10,9 @@ import com.piggie.result.Result;
 import com.piggie.service.EmployeeService;
 import com.piggie.utils.JwtUtil;
 import com.piggie.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Api(tags = "employee interface")
 public class EmployeeController {
 
     @Autowired
@@ -39,6 +44,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation("employee login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
@@ -68,7 +74,19 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @ApiOperation("employee logout")
     public Result<String> logout() {
+        return Result.success();
+    }
+
+    /**
+     * Create new employee
+     */
+    @PostMapping
+    @ApiOperation("create new employee")
+    public Result save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("create new employee {}", employeeDTO);
+        employeeService.save(employeeDTO);
         return Result.success();
     }
 

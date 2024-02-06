@@ -1,5 +1,6 @@
 package com.piggie.service;
 
+import com.piggie.dto.EmployeeDTO;
 import com.piggie.dto.EmployeeLoginDTO;
 import com.piggie.entity.Employee;
 
@@ -12,4 +13,5 @@ public interface EmployeeService {
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
+    void save(EmployeeDTO employeeDTO);
 }

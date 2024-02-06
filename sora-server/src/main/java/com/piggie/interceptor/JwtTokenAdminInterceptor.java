@@ -1,6 +1,7 @@
 package com.piggie.interceptor;
 
 import com.piggie.constant.JwtClaimsConstant;
+import com.piggie.context.BaseContext;
 import com.piggie.properties.JwtProperties;
 import com.piggie.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -47,6 +48,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
+            BaseContext.setCurrentId(empId);
             log.info("当前员工id：", empId);
             //3、通过，放行
             return true;

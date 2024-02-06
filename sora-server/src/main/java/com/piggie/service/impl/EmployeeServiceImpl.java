@@ -1,16 +1,29 @@
 package com.piggie.service.impl;
 
+import com.piggie.constant.JwtClaimsConstant;
 import com.piggie.constant.MessageConstant;
+import com.piggie.constant.PasswordConstant;
 import com.piggie.constant.StatusConstant;
+import com.piggie.context.BaseContext;
+import com.piggie.dto.EmployeeDTO;
 import com.piggie.dto.EmployeeLoginDTO;
 import com.piggie.entity.Employee;
 import com.piggie.exception.AccountLockedException;
 import com.piggie.exception.AccountNotFoundException;
 import com.piggie.exception.PasswordErrorException;
 import com.piggie.mapper.EmployeeMapper;
+import com.piggie.properties.JwtProperties;
 import com.piggie.service.EmployeeService;
+import com.piggie.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -38,7 +51,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         //密码比对
-        // TODO 后期需要进行md5加密，然后再进行比对
+        // TODO Add MD5 encryption, then compare to databases
+         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
@@ -53,4 +67,24 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    @Override
+    /**
+     * Create new employee
+     */
+    public void save(EmployeeDTO employeeDTO) {
+        //  copy properties from dto to Employee pojo
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        //  set status to default 1
+        employee.setStatus(StatusConstant.ENABLE);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+
+        //  Todo change createUser to current user dynamically
+        employee.setCreateUser((Long) BaseContext.getCurrentId());
+        employee.setUpdateUser((Long)BaseContext.getCurrentId());
+        employeeMapper.insert(employee);
+    }
 }
