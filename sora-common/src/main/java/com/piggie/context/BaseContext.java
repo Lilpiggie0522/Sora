@@ -2,13 +2,13 @@ package com.piggie.context;
 
 public class BaseContext {
 
-    public static ThreadLocal<Object> threadLocal = new ThreadLocal<>();
+    public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
 
     public static void setCurrentId(Long id) {
         threadLocal.set(id);
     }
 
-    public static Object getCurrentId() {
+    public static Long getCurrentId() {
         return threadLocal.get();
     }
 
