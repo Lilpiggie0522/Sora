@@ -1,5 +1,7 @@
 package com.piggie.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.piggie.constant.JwtClaimsConstant;
 import com.piggie.constant.MessageConstant;
 import com.piggie.constant.PasswordConstant;
@@ -7,12 +9,14 @@ import com.piggie.constant.StatusConstant;
 import com.piggie.context.BaseContext;
 import com.piggie.dto.EmployeeDTO;
 import com.piggie.dto.EmployeeLoginDTO;
+import com.piggie.dto.EmployeePageQueryDTO;
 import com.piggie.entity.Employee;
 import com.piggie.exception.AccountLockedException;
 import com.piggie.exception.AccountNotFoundException;
 import com.piggie.exception.PasswordErrorException;
 import com.piggie.mapper.EmployeeMapper;
 import com.piggie.properties.JwtProperties;
+import com.piggie.result.PageResult;
 import com.piggie.service.EmployeeService;
 import com.piggie.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -24,6 +28,7 @@ import org.springframework.util.DigestUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -86,5 +91,23 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateUser((Long) BaseContext.getCurrentId());
         employee.setUpdateUser((Long)BaseContext.getCurrentId());
         employeeMapper.insert(employee);
+    }
+
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        /*int size = employeePageQueryDTO.getPageSize();
+        int start = (employeePageQueryDTO.getPage() - 1) * size;
+        List<Employee> employees = employeeMapper.pageQuery(start, size);
+        Long count = employeeMapper.count();
+        PageResult pageResult = new PageResult();
+        pageResult.setTotal(count);
+        pageResult.setRecords(employees);
+        return pageResult;*/
+
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+        List<Employee> result = page.getResult();
+        long total = page.getTotal();
+        return new PageResult(total, result);
     }
 }

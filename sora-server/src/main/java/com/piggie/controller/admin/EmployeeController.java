@@ -4,8 +4,10 @@ import com.piggie.constant.JwtClaimsConstant;
 
 import com.piggie.dto.EmployeeDTO;
 import com.piggie.dto.EmployeeLoginDTO;
+import com.piggie.dto.EmployeePageQueryDTO;
 import com.piggie.entity.Employee;
 import com.piggie.properties.JwtProperties;
+import com.piggie.result.PageResult;
 import com.piggie.result.Result;
 import com.piggie.service.EmployeeService;
 import com.piggie.utils.JwtUtil;
@@ -15,10 +17,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,4 +89,11 @@ public class EmployeeController {
         return Result.success();
     }
 
+    @GetMapping("/page")
+    @ApiOperation("employee page query")
+    public Result page(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("page search");
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
+    }
 }

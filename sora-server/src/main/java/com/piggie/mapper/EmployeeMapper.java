@@ -1,9 +1,15 @@
 package com.piggie.mapper;
 
+import com.github.pagehelper.Page;
+import com.piggie.dto.EmployeeDTO;
+import com.piggie.dto.EmployeePageQueryDTO;
 import com.piggie.entity.Employee;
+import com.piggie.result.PageResult;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
@@ -30,4 +36,12 @@ public interface EmployeeMapper {
             "#{createUser}," +
             "#{updateUser})")
     void insert(Employee employee);
+
+    /*List<Employee> pageQuery(Integer start, Integer size);*/
+
+
+    /*@Select("select count(*) from employee")
+    Long count();*/
+
+    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }
