@@ -6,3 +6,7 @@ sora:
     database: sora
     username: root
     password: 1234
+
+  alioss:
+    bucketName: sora-web-app
+    endpoint: oss-ap-southeast-2.aliyuncs.com
