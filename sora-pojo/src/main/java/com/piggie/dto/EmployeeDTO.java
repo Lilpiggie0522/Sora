@@ -6,7 +6,6 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@ApiModel(description = "new employee model")
 public class EmployeeDTO implements Serializable {
 
     private Long id;

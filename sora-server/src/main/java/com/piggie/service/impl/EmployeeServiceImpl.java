@@ -2,7 +2,6 @@ package com.piggie.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.piggie.constant.JwtClaimsConstant;
 import com.piggie.constant.MessageConstant;
 import com.piggie.constant.PasswordConstant;
 import com.piggie.constant.StatusConstant;
@@ -15,18 +14,12 @@ import com.piggie.exception.AccountLockedException;
 import com.piggie.exception.AccountNotFoundException;
 import com.piggie.exception.PasswordErrorException;
 import com.piggie.mapper.EmployeeMapper;
-import com.piggie.properties.JwtProperties;
 import com.piggie.result.PageResult;
 import com.piggie.service.EmployeeService;
-import com.piggie.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -83,13 +76,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //  set status to default 1
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
         //  Todo change createUser to current user dynamically
-        employee.setCreateUser((Long) BaseContext.getCurrentId());
-        employee.setUpdateUser((Long)BaseContext.getCurrentId());
         employeeMapper.insert(employee);
     }
 
@@ -128,8 +117,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void updateById(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 }
