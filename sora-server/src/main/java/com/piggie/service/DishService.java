@@ -1,6 +1,12 @@
 package com.piggie.service;
 
 import com.piggie.dto.DishDTO;
+import com.piggie.dto.DishPageQueryDTO;
+import com.piggie.entity.Dish;
+import com.piggie.result.PageResult;
+import com.piggie.vo.DishVO;
+
+import java.util.List;
 
 /**
  * ClassName: DishService
@@ -12,5 +18,15 @@ import com.piggie.dto.DishDTO;
  * @Version 1.0
  */
 public interface DishService {
-    public void saveWithFlavor(DishDTO dishDTO);
+    void saveWithFlavor(DishDTO dishDTO);
+
+    PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    void deleteBatch(List<Long> ids);
+
+    DishVO getByIdWithFlavors(Long id);
+
+    void updateById(DishDTO dishDTO);
+
+    List<Dish> getDishesByCategoryId(Long categoryId);
 }

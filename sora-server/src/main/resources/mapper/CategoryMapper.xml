@@ -34,4 +34,8 @@
         </if>
         order by sort asc,create_time desc
     </select>
+    <select id="getCategoryById" resultType="java.lang.String">
+        select name from category where id=#{id}
+    </select>
+
 </mapper>

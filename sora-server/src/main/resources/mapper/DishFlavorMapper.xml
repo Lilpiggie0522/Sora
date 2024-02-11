@@ -10,4 +10,14 @@
             (#{flavor.dishId},#{flavor.name},#{flavor.value})
         </foreach>
     </insert>
+
+    <delete id="deleteByDishIds">
+        delete from dish_flavor where dish_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getFlavorsByDishId" resultType="com.piggie.entity.DishFlavor">
+        select * from dish_flavor where dish_id=#{id}
+    </select>
 </mapper>
