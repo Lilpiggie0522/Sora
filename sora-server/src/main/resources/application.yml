@@ -12,6 +12,11 @@ spring:
       url: jdbc:mysql://${sora.datasource.host}:${sora.datasource.port}/${sora.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${sora.datasource.username}
       password: ${sora.datasource.password}
+  redis:
+    host: ${sora.redis.host}
+    port: ${sora.redis.port}
+    password: ${sora.redis.password}
+    database: ${sora.redis.database}
 
 mybatis:
   #mapper配置文件

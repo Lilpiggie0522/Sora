@@ -54,9 +54,27 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .description("Interface Documentation")
                 .build();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("admin interface")
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.piggie.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.piggie.controller.admin"))
+                .paths(PathSelectors.any())
+                .build();
+        return docket;
+    }
+
+    @Bean
+    public Docket docket_user() {
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("Sora Project Interface Documentation")
+                .version("2.0")
+                .description("Interface Documentation")
+                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("user interface")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.piggie.controller.user"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;
