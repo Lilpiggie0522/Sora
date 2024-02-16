@@ -39,11 +39,15 @@ public class UserDishController {
     public Result<List<DishVO>> getDishesByCategoryId(@RequestParam Long categoryId) {
         log.info("fetching dishes by categoryId");
         //  search dishes in redis
-        
-        //  if in return right away
-
+        String key = "dish_" + categoryId;
+        List<DishVO> dishes = (List<DishVO>) redisTemplate.opsForValue().get(key);
+        if (dishes != null && dishes.size() > 0) {
+            //  if in return right away
+            return Result.success(dishes);
+        }
         //  if not, search database
         List<DishVO> dishesWithFlavors = userService.getDishesByCategoryId(categoryId);
+        redisTemplate.opsForValue().set(key, dishesWithFlavors);
         return Result.success(dishesWithFlavors);
     }
 }

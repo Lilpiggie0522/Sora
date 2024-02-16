@@ -7,6 +7,7 @@ import com.piggie.enumeration.OperationType;
 import com.piggie.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -39,6 +40,9 @@ public interface DishMapper {
     @AutoFill(value = OperationType.UPDATE)
     void updateById(Dish dish);
 
-    @Select("select * from dish where category_id=#{categoryId}")
+    @Select("select * from dish where category_id=#{categoryId} and status=1")
     List<Dish> getDishesByCategoryId(Long categoryId);
+
+    @Update("update dish set status=#{status} where id=#{id}")
+    void setStatus(Integer status, Long id);
 }

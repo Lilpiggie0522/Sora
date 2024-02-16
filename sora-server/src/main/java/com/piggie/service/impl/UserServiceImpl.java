@@ -127,6 +127,9 @@ public class UserServiceImpl implements UserService {
             List<DishFlavor> flavors = dishFlavorMapper.getFlavorsByDishId(dish.getId());
             dishVO.setFlavors(flavors);
             BeanUtils.copyProperties(dish, dishVO);
+            String categoryName = categoryMapper.getCategoryNameById(categoryId);
+            System.out.println("category name is " + categoryName);
+            dishVO.setCategoryName(categoryName);
             dishVOS.add(dishVO);
         }
         return dishVOS;

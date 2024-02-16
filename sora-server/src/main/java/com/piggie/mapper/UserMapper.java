@@ -17,9 +17,8 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper {
-    @Select("select * from user where id = #{openId}")
+    @Select("select * from user where openid = #{openId}")
     User getByOpenId(String openId);
-
 
     void insert(User user);
 

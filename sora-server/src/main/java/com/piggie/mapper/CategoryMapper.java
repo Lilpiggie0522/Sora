@@ -5,10 +5,7 @@ import com.piggie.annotation.AutoFill;
 import com.piggie.dto.CategoryPageQueryDTO;
 import com.piggie.entity.Category;
 import com.piggie.enumeration.OperationType;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -59,4 +56,7 @@ public interface CategoryMapper {
     String getCategoryById(Long id);
 
     List<Category> getCategoriesByType(Integer type);
+
+    @Select("select name from category where id=#{categoryId}")
+    String getCategoryNameById(Long categoryId);
 }

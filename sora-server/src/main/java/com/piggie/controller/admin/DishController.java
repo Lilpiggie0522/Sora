@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.piggie.dto.DishDTO;
 import com.piggie.dto.DishPageQueryDTO;
 import com.piggie.entity.Dish;
+import com.piggie.mapper.DishMapper;
 import com.piggie.result.PageResult;
 import com.piggie.result.Result;
 import com.piggie.service.DishService;
@@ -13,9 +14,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * ClassName: DishController
@@ -31,14 +34,19 @@ import java.util.List;
 @Slf4j
 @Api(tags = "dish interface")
 public class DishController {
+    public static final String KEY = "SHOP_STATUS";
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
     @PostMapping
     @ApiOperation("create new dish")
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("creating new dish {}", dishDTO);
+        String key = "dish_" + dishDTO.getCategoryId();
         dishService.saveWithFlavor(dishDTO);
+        redisTemplate.delete(key);
         return Result.success();
     }
 
@@ -55,6 +63,7 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids) {
         log.info("delete dishes by batch {}", ids);
         dishService.deleteBatch(ids);
+        cleanCache("dish_*");
         return Result.success();
     }
 
@@ -84,6 +93,22 @@ public class DishController {
     public Result<Object> updateDish(@RequestBody DishDTO dishDTO) {
         log.info("dishDto is {}", dishDTO);
         dishService.updateById(dishDTO);
+        cleanCache("dish_*");
         return Result.success();
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("set dish status")
+    public Result setStatus(@PathVariable Integer status, @RequestParam Long id) {
+        log.info("status will be set to {} for dish id {}", status, id);
+        dishService.setStatus(status, id);
+        cleanCache("dish_*");
+        return Result.success();
+    }
+
+    private void cleanCache(String pattern) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~start cleaning cache~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        Set keys = redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
     }
 }

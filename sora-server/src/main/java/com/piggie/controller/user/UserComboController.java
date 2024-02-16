@@ -9,6 +9,7 @@ import com.piggie.vo.DishVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class UserComboController {
     @Autowired
     UserService userService;
     @GetMapping("/list")
+    @Cacheable(cacheNames = "comboCache", key = "#categoryId")
     public Result<List<Setmeal>> getCombosByCategoryId(@RequestParam Long categoryId) {
         log.info("fetching combo using categoryId: {}", categoryId);
         List<Setmeal> combos = userService.getCombosByCategoryId(categoryId);
