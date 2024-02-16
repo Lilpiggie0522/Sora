@@ -40,4 +40,7 @@ public interface ComboMapper {
     void setComboStatus(Setmeal combo);
 
     void deleteByIds(List<Long> ids);
+
+    @Select("select * from setmeal where category_id=#{categoryId}")
+    List<Setmeal> getComboByCategoryId(Long categoryId);
 }

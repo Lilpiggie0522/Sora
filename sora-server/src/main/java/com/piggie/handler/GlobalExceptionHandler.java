@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public Result exceptionHandler(BaseException ex){
-        log.error("Exception message：{}", ex.getMessage());
+        log.error("Exception message：no no no {}", ex.getMessage());
         return Result.error(ex.getMessage());
     }
 

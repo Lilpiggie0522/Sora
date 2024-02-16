@@ -3,6 +3,7 @@ package com.piggie.mapper;
 import com.piggie.annotation.AutoFill;
 import com.piggie.entity.SetmealDish;
 import com.piggie.enumeration.OperationType;
+import com.piggie.vo.DishItemVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -36,4 +37,6 @@ public interface ComboDishMapper {
     void deleteByComboId(Long comboId);
 
     void deleteByComboIds(List<Long> ids);
+
+    List<DishItemVO> getDishesByComboId(Long id);
 }

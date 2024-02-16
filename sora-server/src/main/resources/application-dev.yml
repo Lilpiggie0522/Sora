@@ -15,3 +15,7 @@ sora:
   alioss:
     bucketName: sora-web-app
     endpoint: oss-ap-southeast-2.aliyuncs.com
+
+  wechat:
+    appid: wx9f54d547390a2725
+    secret: 7d2378eb673a77fdf1ad03d35192143d

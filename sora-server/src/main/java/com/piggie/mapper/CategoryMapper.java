@@ -57,4 +57,6 @@ public interface CategoryMapper {
     List<Category> list(Integer type);
 
     String getCategoryById(Long id);
+
+    List<Category> getCategoriesByType(Integer type);
 }

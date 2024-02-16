@@ -43,6 +43,14 @@ piggie:
     # 设置前端传递过来的令牌名称
     admin-token-name: token
 
+    user-secret-key: itcast
+    user-ttl: 7200000
+    user-token-name: authentication
+
+  wechat:
+    appid: ${sora.wechat.appid}
+    secret: ${sora.wechat.secret}
+
   alioss:
     bucketName: ${sora.alioss.bucketName}
     endpoint: ${sora.alioss.endpoint}
