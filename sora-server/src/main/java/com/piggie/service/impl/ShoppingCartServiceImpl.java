@@ -5,6 +5,7 @@ import com.piggie.dto.ShoppingCartDTO;
 import com.piggie.entity.Dish;
 import com.piggie.entity.Setmeal;
 import com.piggie.entity.ShoppingCart;
+import com.piggie.exception.BaseException;
 import com.piggie.mapper.ComboMapper;
 import com.piggie.mapper.DishMapper;
 import com.piggie.mapper.ShoppingCartMapper;
@@ -73,5 +74,48 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setNumber(1);
         shoppingCart.setCreateTime(LocalDateTime.now());
         shoppingCartMapper.insert(shoppingCart);
+    }
+
+    /**
+     * display shopping cart
+     * @return
+     */
+    @Override
+    public List<ShoppingCart> showShoppingCart() {
+        //  get current wechat user's userId
+        Long userId = BaseContext.getCurrentId();
+        ShoppingCart shoppingCart = ShoppingCart.builder().id(userId).build();
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        return list;
+    }
+
+    /**
+     * empty everything within shopping cart
+     */
+    @Override
+    public void emptyShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.emptyShoppingCart(userId);
+    }
+
+    @Override
+    public void subItem(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        Long userId = BaseContext.getCurrentId();
+        shoppingCart.setUserId(userId);
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        if (list != null && list.size() > 0) {
+            ShoppingCart existedCart = list.get(0);
+            if (existedCart.getNumber() - 1 <= 0) {
+                // delete this item
+                shoppingCartMapper.delete(shoppingCart);
+                return;
+            }
+            shoppingCart.setNumber(existedCart.getNumber() - 1);
+            shoppingCartMapper.subItem(shoppingCart);
+            return;
+        }
+        throw new BaseException("something wrong with database");
     }
 }

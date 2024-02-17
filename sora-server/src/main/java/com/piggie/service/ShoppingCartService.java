@@ -1,6 +1,9 @@
 package com.piggie.service;
 
 import com.piggie.dto.ShoppingCartDTO;
+import com.piggie.entity.ShoppingCart;
+
+import java.util.List;
 
 /**
  * ClassName: ShoppingCartService
@@ -13,4 +16,10 @@ import com.piggie.dto.ShoppingCartDTO;
  */
 public interface ShoppingCartService {
     void addShoppingCart(ShoppingCartDTO shoppingCartDTO);
+
+    List<ShoppingCart> showShoppingCart();
+
+    void emptyShoppingCart();
+
+    void subItem(ShoppingCartDTO shoppingCartDTO);
 }
