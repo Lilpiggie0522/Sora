@@ -59,7 +59,7 @@ public class ComboServiceImpl implements ComboService {
 
     @Override
     public SetmealVO getComboById(Long id) {
-        SetmealVO comboVo = comboMapper.getComboById(id);
+        SetmealVO comboVo = comboMapper.getComboVoById(id);
         List<SetmealDish> dishes = comboDishMapper.getDishByComboId(id);
         comboVo.setSetmealDishes(dishes);
         return comboVo;

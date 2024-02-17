@@ -30,7 +30,10 @@ public interface ComboMapper {
 
     Page<Setmeal> pageQuery(SetmealPageQueryDTO comboPageDto);
 
-    SetmealVO getComboById(Long id);
+    SetmealVO getComboVoById(Long id);
+
+    @Select("select * from setmeal where id=#{id}")
+    Setmeal getComboById(Long id);
 
     @AutoFill(value = OperationType.UPDATE)
     void update(Setmeal combo);
