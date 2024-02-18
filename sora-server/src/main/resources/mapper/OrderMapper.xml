@@ -13,4 +13,11 @@
                 #{rejectionReason},#{cancelTime}, #{estimatedDeliveryTime}, #{deliveryStatus}, #{deliveryTime}, #{packAmount},
                 #{tablewareNumber},#{tablewareStatus})
     </insert>
+    <select id="orderPageQuery" resultType="com.piggie.entity.Orders">
+        select * from orders
+        <where>
+            <if test="userId != null">user_id=#{userId}</if>
+            <if test="status != null">and status=#{status}</if>
+        </where>
+    </select>
 </mapper>

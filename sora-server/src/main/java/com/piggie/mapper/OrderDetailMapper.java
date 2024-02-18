@@ -2,6 +2,7 @@ package com.piggie.mapper;
 
 import com.piggie.entity.OrderDetail;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,4 +20,7 @@ import java.util.List;
 public interface OrderDetailMapper {
 
     void insertByBatch  (List<OrderDetail> orderDetailList);
+
+    @Select("select * from order_detail where order_id=#{orderId}")
+    List<OrderDetail> getOrderDetailsByOrderId(Long orderId);
 }

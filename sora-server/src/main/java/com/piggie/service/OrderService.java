@@ -1,7 +1,12 @@
 package com.piggie.service;
 
+import com.piggie.dto.OrdersPageQueryDTO;
+import com.piggie.dto.OrdersPaymentDTO;
 import com.piggie.dto.OrdersSubmitDTO;
+import com.piggie.result.PageResult;
+import com.piggie.vo.OrderPaymentVO;
 import com.piggie.vo.OrderSubmitVO;
+import com.piggie.vo.OrderVO;
 
 /**
  * ClassName: OrderService
@@ -14,4 +19,14 @@ import com.piggie.vo.OrderSubmitVO;
  */
 public interface OrderService {
     OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
+
+    OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO);
+
+    PageResult pageQuery(int page, int pageSize, Integer status);
+
+    OrderVO getDetailByOrderId(Long orderId);
+
+    void cancel(Long orderId);
+
+    void repetition(Long orderId);
 }
